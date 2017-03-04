@@ -1,0 +1,215 @@
+.settings {
+	background-color: #405270;
+	box-sizing: border-box;
+	color: #ffffff;
+	height: 100%;
+	padding: 8px 14px;
+}
+
+.settings__header {
+	border-bottom: 1px solid lightgray;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0 0 7px 7px;
+}
+
+.settings__settings-wrapper {
+	align-items: baseline;
+	display: flex;
+	padding: 5px 7px;
+}
+
+.settings__input-group {
+	box-sizing: border-box;
+	flex: 3;
+	margin-right: 10px;
+	padding-right: 7px;
+}
+
+.settings__input-group--button {
+	flex: 1
+}
+
+.settings__label {
+	display: block;
+	font-size: 18px;
+}
+
+.settings__label--inline {
+	display: inline-block;
+	margin-right: 8px;
+}
+
+.settings__input {
+	border: 1px solid lightgray;
+	height: 22px;
+	margin-top: 7px;
+	width: 95%;
+	-webkit-appearance: none;
+
+	&:disabled {
+		color: #a1a1a1;
+		cursor: not-allowed;
+	}
+}
+
+.settings__select {
+	position: relative;
+}
+
+.settings__select select {
+	background-color: #ffffff;
+	border: 0;
+	border-radius: 0;
+	box-sizing: border-box;
+	font-size: 16px;
+	height: 25px;
+	line-height: 1;
+	padding: 5px;
+	-webkit-appearance: none;
+	width: 268px;
+}
+
+.settings__select span {
+	color: #000000;
+	pointer-events: none;
+	position: absolute;
+	right: 8px;
+	top: 8px;
+}
+
+.settings__input--inline {
+	height: 22px;
+	margin: 0;
+	max-width: 40px;
+}
+
+.settings__threshold-wrapper-upper, .settings__threshold-wrapper-lower {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.settings__high-ping-toggle {
+	display: block;
+	margin: 0;
+}
+
+.settings__threshold-wrapper-lower {
+	margin-top: 7px;
+}
+
+.settings__button-wrapper {
+	flex: 2;
+	padding-left: 6%;
+}
+
+.settings__button {
+	background-color: aqua;
+	border: none;
+	cursor: pointer;
+	display: block;
+	height: 30px;
+	width: 100%;
+
+	&:disabled {
+		color: #7f7f7f;
+		cursor: not-allowed;
+	}
+}
+
+
+.settings__button:last-child {
+	margin-top: 10px;
+}
+
+.settings__button--stop {
+	background-color: rgba(255, 0, 7, 0.73);
+	color: #ffffff;
+
+	&:disabled {
+		 color: #c9c9c9;
+ 	}
+}
+
+/*
+	Terrible, terrible CSS for the threshold checkbox
+*/
+
+.settings__high-ping-toggle-wrapper {
+	position: relative;
+	width: 40px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.settings__high-ping-toggle-input {
+	display: none;
+}
+
+.settings__high-ping-toggle-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	border: 1px solid #999999;
+	border-radius: 20px;
+}
+
+.settings__high-ping-toggle-inner {
+	display: block;
+	width: 200%;
+	margin-left: -100%;
+	transition: margin 0.15s ease-in 0s;
+}
+
+.settings__high-ping-toggle-inner:before, .settings__high-ping-toggle-inner:after {
+	display: block;
+	float: left;
+	width: 50%;
+	height: 13px;
+	padding: 0;
+	line-height: 13px;
+	font-size: 11px;
+	color: white;
+	font-family: Trebuchet, Arial, sans-serif;
+	font-weight: bold;
+	box-sizing: border-box;
+}
+
+.settings__high-ping-toggle-inner:before {
+	content: "";
+	padding-left: 10px;
+	background-color: #6ada56;
+	color: #FFFFFF;
+}
+
+.settings__high-ping-toggle-inner:after {
+	content: "";
+	padding-right: 10px;
+	background-color: #EEEEEE;
+	color: #999999;
+	text-align: right;
+}
+
+.settings__high-ping-handle {
+	display: block;
+	width: 8px;
+	margin: 2.5px;
+	background: #FFFFFF;
+	position: absolute;
+	top: -1px;
+	bottom: 0;
+	right: 26px;
+	border: 1px solid #999999;
+	border-radius: 20px;
+	transition: all 0.15s ease-in 0s;
+}
+
+.settings__high-ping-toggle-input:checked + .settings__high-ping-toggle-label .settings__high-ping-toggle-inner {
+	margin-left: 0;
+}
+
+.settings__high-ping-toggle-input:checked + .settings__high-ping-toggle-label .settings__high-ping-handle {
+	right: 0;
+}

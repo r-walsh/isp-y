@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>i-spy</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/javascript">
+	window.child_process = require( "child_process" );
+	const s = document.createElement( 'script' );
+	const { NODE_ENV, PORT } = process.env;
+	const port = PORT || 8080;
+	s.src = NODE_ENV === "development"
+		? `http://localhost:${ port }/bundle.js`
+		: "/bundle.js";
+	document.body.appendChild( s )
+</script>
+</body>
+</html>

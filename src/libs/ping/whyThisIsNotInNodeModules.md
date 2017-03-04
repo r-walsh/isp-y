@@ -1,0 +1,1 @@
+This lib requires `child_process` and webpack didn't like that one bit. So `lib/ping-promise` is now using `window.child_process`, placed there in `index.html`.
