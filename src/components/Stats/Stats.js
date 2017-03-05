@@ -31,3 +31,7 @@ export default function Stats( { pingInfo } ) {
 		</div>
 	);
 }
+
+Stats.propTypes = {
+	pingInfo: PropTypes.arrayOf( PropTypes.object )
+};

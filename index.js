@@ -9,6 +9,6 @@ luvi( {
 	, onListen() {
 		return electroner( resolve( __dirname, "app.js" ), () => process.exit( 0 ) );
 	}
-	, root: resolve( __dirname, "public" )
 	, port: 9876
+	, root: resolve( __dirname, "public" )
 } );

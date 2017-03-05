@@ -1,8 +1,8 @@
 const {
 	app,
-	Menu,
 	BrowserWindow
 } = require( "electron" );
+
 const { join } = require( "path" );
 const { open } = require( "zeelib" );
 const appUrl = "http://127.0.0.1:9876";
@@ -12,13 +12,13 @@ let mainWindow = null;
 const createWindow = () => {
 	// create the window, with its options
 	mainWindow = new BrowserWindow( {
-		  width: 1200
-		, height: 800
-		, "accept-first-mouse": true
-		, "title-bar-style": "hidden"
-		, "node-integration": true
+		  "accept-first-mouse": true
 		, "auto-hide-menu-bar": true
-		, "icon": join( __dirname, "public", "images", "icon.png" )
+		, height: 800
+		, icon: join( __dirname, "public", "images", "icon.png" )
+		, "node-integration": true
+		, "title-bar-style": "hidden"
+		, width: 1200
 	} );
 
 	// open links externally
