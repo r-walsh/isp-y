@@ -29,12 +29,14 @@ export default class Settings extends Component {
 		this.setState( { [ field ]: event.target.value } );
 	}
 
+	handleFocus = event => event.target.select();
+
 	toggleAlertOnHighPing = () => this.setState( { alertOnHighPing: !this.state.alertOnHighPing } );
 
 	startPinging = () => {
-		const { host, timeout } = this.state;
+		const { alertOnHighPing, highPingThreshold, host, timeout } = this.state;
 
-		startPinging( host, timeout );
+		startPinging( host, timeout, alertOnHighPing, highPingThreshold );
 	};
 
 	stopPinging() {
@@ -115,6 +117,7 @@ export default class Settings extends Component {
 								className="settings__input settings__input--inline"
 								disabled={ !alertOnHighPing }
 								onChange={ this.handleHighPingThresholdChange }
+								onFocus={ this.handleFocus }
 								placeholder="100"
 								type="number"
 								value={ highPingThreshold }

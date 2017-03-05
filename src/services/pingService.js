@@ -1,31 +1,31 @@
 import _ from "lodash";
 import { Observable, Subject } from "rxjs";
 import ping from "../libs/ping";
-
 import store from "../store";
 import { addPingData, startPingInterval, stopPingInterval } from "../ducks/ping";
 
 const stop$ = new Subject();
 
-export function startPinging( host, timeoutString ) {
+export function startPinging( host, timeoutString, alertOnHighPing, notificationThreshold ) {
 	const interval = parseInt( timeoutString );
-	Observable.interval( interval )
+
+	store.dispatch( startPingInterval() );
+
+	Observable
+		.interval( interval )
+		.startWith( 0 )
 		.takeUntil( stop$ )
-		.do( () => store.dispatch( startPingInterval() )
-		.flatMap( () => ping.promise.probe( "8.8.8.8", { timeout: interval / 1000 } ) )
-		.do( console.log )
-		.subscribe( ( result ) => {
-			const timeSent = new Date(); // just for testing
-			store.dispatch( addPingData( result.time, timeSent ) );
-		} ) );
-	
-	// Observable
-	// 	.interval( interval )
-	// 	.takeUntil( stop$ )
-	// 	.do( () => store.dispatch( startPingInterval() ) )
-	// 	.flatMap( () => [ new Date(), ping.promise.probe( host, { timeout: interval / 1000 } ) ] )
-	// 	// .subscribe( ( [ timeSent, result ] ) => store.dispatch( addPingData( result.time, timeSent ) ) );
-	// 	.subscribe( ( ...args ) => console.log( args ) );
+		.flatMap( () => ping.promise.probe( host, { timeout: interval / 1000 } )
+			.then( result => {
+				if ( result.time >= notificationThreshold && alertOnHighPing ) {
+					new window.Notification( "High Ping Warning", {
+						body: `${ Math.round( result.time ) }ms`
+					} );
+				}
+				return [ result, new Date() ];
+			} )
+		)
+		.subscribe( ( [ result, timeSent ] ) => store.dispatch( addPingData( result.time, timeSent ) ) );
 }
 
 export function stopPinging() {
