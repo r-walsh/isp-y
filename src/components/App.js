@@ -25,10 +25,10 @@ export class App extends Component {
 	}
 }
 
-function mapStateToProps( { pingInterval, pingInfo } ) {
+function mapStateToProps( { pingInfo, pingRunning } ) {
 	return {
 		  pingInfo
-		, pingRunning: pingInterval !== null
+		, pingRunning
 	};
 }
 

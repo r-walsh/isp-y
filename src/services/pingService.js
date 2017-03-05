@@ -1,22 +1,36 @@
 import _ from "lodash";
+import { Observable, Subject } from "rxjs";
 import ping from "../libs/ping";
 
 import store from "../store";
-import { addPingData, clearPingInterval, setPingInterval } from "../ducks/ping";
+import { addPingData, startPingInterval, stopPingInterval } from "../ducks/ping";
+
+const stop$ = new Subject();
 
 export function startPinging( host, timeoutString ) {
-	const timeout = parseInt( timeoutString );
-	store.dispatch( setPingInterval( window.setInterval( () => {
-		const timeSent = new Date();
-		ping
-			.promise.probe( "8.8.8.8", { timeout: timeout / 1000 } )
-			.then( res => store.dispatch( addPingData( res.time, timeSent ) ) );
-	}, timeout ) ) );
+	const interval = parseInt( timeoutString );
+	Observable.interval( interval )
+		.takeUntil( stop$ )
+		.do( () => store.dispatch( startPingInterval() )
+		.flatMap( () => ping.promise.probe( "8.8.8.8", { timeout: interval / 1000 } ) )
+		.do( console.log )
+		.subscribe( ( result ) => {
+			const timeSent = new Date(); // just for testing
+			store.dispatch( addPingData( result.time, timeSent ) );
+		} ) );
+	
+	// Observable
+	// 	.interval( interval )
+	// 	.takeUntil( stop$ )
+	// 	.do( () => store.dispatch( startPingInterval() ) )
+	// 	.flatMap( () => [ new Date(), ping.promise.probe( host, { timeout: interval / 1000 } ) ] )
+	// 	// .subscribe( ( [ timeSent, result ] ) => store.dispatch( addPingData( result.time, timeSent ) ) );
+	// 	.subscribe( ( ...args ) => console.log( args ) );
 }
 
 export function stopPinging() {
-	window.clearInterval( store.getState().pingInterval );
-	store.dispatch( clearPingInterval() );
+	stop$.next( true );
+	store.dispatch( stopPingInterval() );
 }
 
 function getDefinedResponseTimes( pingInfo ) {
