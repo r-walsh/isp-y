@@ -6,6 +6,19 @@
   "keywords": [],
   "author": "Ryan Walsh <ryan@thehatrack.net> (https://twitter.com/_rtwalsh)",
   "license": "ISC",
+  "babel": {
+    "presets": ["react", ["latest", {"es2015": {"modules": false}}]],
+    "plugins": [
+      "transform-es2015-modules-commonjs",
+      "transform-class-properties"
+    ],
+    "comments": false
+  },
+  "eslintConfig": {
+    "extends": "devmountain/react-config",
+    "parser": "babel-eslint",
+    "plugins": ["babel"]
+  },
   "scripts": {
     "app": "electron electron.js",
     "build": "NODE_ENV=production npm run clean && webpack -p",

@@ -1,9 +1,0 @@
-{
-  "extends": [
-    "devmountain/react-config"
-  ],
-  "plugins": [
-    "babel"
-  ],
-  "parser": "babel-eslint"
-}
