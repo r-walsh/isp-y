@@ -79,20 +79,6 @@ export default class Settings extends Component {
 								type="number"
 								value={ timeout }
 							/>
-							{/*<select*/}
-								{/*className="settings__input"*/}
-								{/*id="settings__timeout-select"*/}
-								{/*onChange={ this.handleTimeoutChange }*/}
-								{/*value={ timeout }*/}
-							{/*>*/}
-								{/*<option value="300">300ms</option>*/}
-								{/*<option value="400">400ms</option>*/}
-								{/*<option value="500">500ms</option>*/}
-								{/*<option value="1000">1 second</option>*/}
-								{/*<option value="1500">1.5 seconds</option>*/}
-								{/*<option value="2000">2 seconds</option>*/}
-							{/*</select>*/}
-							{/*<span>▼</span>*/}
 						</div>
 					</div>
 

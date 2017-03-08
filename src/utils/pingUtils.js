@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 function getDefinedResponseTimes( pingInfo ) {
 	return pingInfo
 		.map( ( { responseTime } ) => responseTime )

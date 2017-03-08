@@ -1,5 +1,5 @@
-import _ from "lodash";
 import { Observable, Subject } from "rxjs";
+
 import ping from "../libs/ping";
 import store from "../store";
 import { addPingData, startPingInterval, stopPingInterval } from "../ducks/ping";
@@ -46,5 +46,3 @@ export function stopPinging() {
 	stop$.next( true );
 	store.dispatch( stopPingInterval() );
 }
-
-
