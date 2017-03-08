@@ -55,10 +55,10 @@ module.exports = {
 		, tls: "empty"
 	}
 	, output: isProd ? {
-		filename: "bundle.js"
+		  filename: "bundle.js"
 		, path: pub
 	} : {
-		filename: "bundle.js"
+		  filename: "bundle.js"
 		, path: pub
 		, publicPath: "http://127.0.0.1:8080/"
 	}

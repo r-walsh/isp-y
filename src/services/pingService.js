@@ -62,5 +62,7 @@ export function calculateJitter( pingInfo ) {
 export function calculateUptime( pingInfo ) {
 	const amountTimedOut = pingInfo.filter( ( { responseTime } ) => responseTime === undefined ).length;
 
-	return Math.round( ( 1 - ( amountTimedOut / pingInfo.length ) ) * 100 ) || 100;
+	const uptime = Math.round( ( 1 - ( amountTimedOut / pingInfo.length ) ) * 100 );
+
+	return uptime || uptime === 0 ? uptime : 100;
 }
