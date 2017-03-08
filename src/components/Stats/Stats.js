@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 
 import "./Stats.pcss";
 
-import { calculateAveragePing, calculateJitter, calculateUptime } from "../../services/pingService";
+import { calculateAveragePing, calculateJitter, calculateUptime } from "../../utils/pingUtils";
 
 import Stat from "./Stat/Stat";
 
