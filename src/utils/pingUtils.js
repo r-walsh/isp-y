@@ -1,4 +1,4 @@
-import _ from "lodash";
+import R from "ramda";
 
 function getDefinedResponseTimes( pingInfo ) {
 	return pingInfo
@@ -8,21 +8,23 @@ function getDefinedResponseTimes( pingInfo ) {
 
 export function calculateAveragePing( pingInfo ) {
 	const definedResponseTimes = getDefinedResponseTimes( pingInfo );
-	const averagePingOrNaN = Math.round(
-		definedResponseTimes.reduce( ( pv, cr ) => pv + cr, 0 ) / definedResponseTimes.length
-	);
 
-	return isNaN( averagePingOrNaN ) ? 0 : averagePingOrNaN;
+	return R.pipe(
+		  R.sum
+		, R.divide( R.__, definedResponseTimes.length )
+		, Math.round
+	)( definedResponseTimes ) || 0;
 }
 
-export function calculateJitter( pingInfo ) {
+export function calculateAverageJitter( pingInfo ) {
 	if ( pingInfo.length <= 0 ) {
 		return 0;
 	}
 
-	const definedResponseTimes = getDefinedResponseTimes( pingInfo );
+	const jitterTimes = getDefinedResponseTimes( pingInfo )
+		.map( ( time, index, arr ) => Math.abs( time - arr[ index + 1 ] ) || 0 );
 
-	return ( ( _.max( definedResponseTimes ) || 0 ) - ( _.min( definedResponseTimes ) || 0 ) ).toFixed( 2 );
+	return R.pipe( R.sum, R.divide( R.__, jitterTimes.length ) )( jitterTimes ).toFixed( 2 ) || 0;
 }
 
 export function calculateUptime( pingInfo ) {

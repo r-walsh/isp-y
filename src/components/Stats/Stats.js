@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 
 import "./Stats.pcss";
 
-import { calculateAveragePing, calculateJitter, calculateUptime } from "../../utils/pingUtils";
+import { calculateAveragePing, calculateAverageJitter, calculateUptime } from "../../utils/pingUtils";
 
 import Stat from "./Stat/Stat";
 
@@ -16,8 +16,8 @@ export default function Stats( { pingInfo } ) {
 					value={ `${ calculateAveragePing( pingInfo ) }ms` }
 				/>
 				<Stat
-					name="jitter"
-					value={ `${ calculateJitter( pingInfo ) }ms` }
+					name="avg. jitter"
+					value={ `${ calculateAverageJitter( pingInfo ) }ms` }
 				/>
 				<Stat
 					name="uptime"

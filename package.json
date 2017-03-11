@@ -7,7 +7,17 @@
   "author": "Ryan Walsh <ryan@thehatrack.net> (https://twitter.com/_rtwalsh)",
   "license": "ISC",
   "babel": {
-    "presets": ["react", ["latest", {"es2015": {"modules": false}}]],
+    "presets": [
+      "react",
+      [
+        "latest",
+        {
+          "es2015": {
+            "modules": false
+          }
+        }
+      ]
+    ],
     "plugins": [
       "transform-es2015-modules-commonjs",
       "transform-class-properties"
@@ -17,7 +27,9 @@
   "eslintConfig": {
     "extends": "devmountain/react-config",
     "parser": "babel-eslint",
-    "plugins": ["babel"]
+    "plugins": [
+      "babel"
+    ]
   },
   "scripts": {
     "app": "electron electron.js",
@@ -34,8 +46,8 @@
     "chart.js": "^2.5.0",
     "electron": "1.4.15",
     "electroner": "4.0.2",
-    "lodash": "^4.17.4",
     "luvi": "1.1.6",
+    "ramda": "^0.23.0",
     "react": "15.4.2",
     "react-css-modules": "4.1.0",
     "react-dom": "15.4.2",
