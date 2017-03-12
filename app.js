@@ -1,6 +1,6 @@
 const {
-	app,
-	BrowserWindow
+	  app
+	, BrowserWindow
 } = require( "electron" );
 
 const { join } = require( "path" );
@@ -10,15 +10,19 @@ const appUrl = "http://127.0.0.1:9876";
 let mainWindow = null;
 
 const createWindow = () => {
+	const { screen } = require( "electron" );
+
+	const { height, width } = screen.getPrimaryDisplay().workAreaSize;
+
 	// create the window, with its options
 	mainWindow = new BrowserWindow( {
 		  "accept-first-mouse": true
 		, "auto-hide-menu-bar": true
-		, height: 800
+		, height
 		, icon: join( __dirname, "public", "images", "icon.png" )
 		, "node-integration": true
 		, "title-bar-style": "hidden"
-		, width: 1200
+		, width
 	} );
 
 	// open links externally

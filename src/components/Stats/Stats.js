@@ -2,30 +2,46 @@ import React, { PropTypes } from "react";
 
 import "./Stats.pcss";
 
-import { calculateAveragePing, calculateAverageJitter, calculateUptime } from "../../utils/pingUtils";
+import getPingStats from "../../utils/pingUtils";
 
 import Stat from "./Stat/Stat";
 
 export default function Stats( { pingInfo } ) {
+	const {
+		  averageJitter
+		, averagePing
+		, maxPing
+		, minPing
+		, uptime
+	} = getPingStats( pingInfo );
+
 	return (
 		<div className="stats">
 			<h3 className="stats__header">STATS</h3>
 			<div className="stats__stat-wrapper">
 				<Stat
 					name="avg. ping"
-					value={ `${ calculateAveragePing( pingInfo ) }ms` }
+					value={ `${ averagePing }ms` }
 				/>
 				<Stat
 					name="avg. jitter"
-					value={ `${ calculateAverageJitter( pingInfo ) }ms` }
+					value={ `${ averageJitter }ms` }
 				/>
 				<Stat
 					name="uptime"
-					value={ `${ calculateUptime( pingInfo ) }%` }
+					value={ `${ uptime }%` }
 				/>
 				<Stat
 					name="packet loss"
 					value="3%"
+				/>
+				<Stat
+					name="max ping"
+					value={ `${ maxPing }ms` }
+				/>
+				<Stat
+					name="min. ping"
+					value={ `${ minPing }ms` }
 				/>
 			</div>
 		</div>

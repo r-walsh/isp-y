@@ -22,7 +22,7 @@ function setupHighPingAlerts( host, threshold, $pinger ) {
 }
 
 export function startPinging( host, timeoutString, alertOnHighPing, notificationThreshold ) {
-	const interval = parseInt( timeoutString );
+	const interval = parseFloat( timeoutString );
 
 	store.dispatch( startPingInterval() );
 

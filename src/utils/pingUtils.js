@@ -6,14 +6,12 @@ function getDefinedResponseTimes( pingInfo ) {
 		.filter( time => time !== undefined );
 }
 
-export function calculateAveragePing( pingInfo ) {
-	const definedResponseTimes = getDefinedResponseTimes( pingInfo );
-
+export function calculateAveragePing( responseTimes ) {
 	return R.pipe(
-		  R.sum
-		, R.divide( R.__, definedResponseTimes.length )
-		, Math.round
-	)( definedResponseTimes ) || 0;
+			  R.sum
+			, R.divide( R.__, responseTimes.length )
+			, Math.round
+		)( responseTimes ) || 0;
 }
 
 export function calculateAverageJitter( pingInfo ) {
@@ -21,10 +19,13 @@ export function calculateAverageJitter( pingInfo ) {
 		return 0;
 	}
 
-	const jitterTimes = getDefinedResponseTimes( pingInfo )
-		.map( ( time, index, arr ) => Math.abs( time - arr[ index + 1 ] ) || 0 );
-
-	return R.pipe( R.sum, R.divide( R.__, jitterTimes.length ) )( jitterTimes ).toFixed( 2 ) || 0;
+	return (
+		R.pipe(
+			  R.aperture( 2 )
+			, R.map( ( [ a, b ] ) => Math.abs( a - b ) )
+			, R.converge( R.divide, [ R.sum, R.length ] )
+		)( pingInfo ) || 0
+	).toFixed( 2 );
 }
 
 export function calculateUptime( pingInfo ) {
@@ -33,4 +34,28 @@ export function calculateUptime( pingInfo ) {
 	const uptime = Math.round( ( 1 - ( amountTimedOut / pingInfo.length ) ) * 100 );
 
 	return uptime || uptime === 0 ? uptime : 100;
+}
+
+function getMaxPing( responseTimes ) {
+	const maxOrNegativeInfinity = Math.round( Math.max( ...responseTimes ) );
+
+	return maxOrNegativeInfinity === -Infinity ? 0 : maxOrNegativeInfinity;
+}
+
+function getMinPing( responseTimes ) {
+	const minOrNegativeInfinity = Math.round( Math.min( ...responseTimes ) );
+
+	return minOrNegativeInfinity === -Infinity ? 0 : minOrNegativeInfinity;
+}
+
+export default function getPingStats( pingInfo ) {
+	const definedResponseTimes = getDefinedResponseTimes( pingInfo );
+
+	return {
+		  averageJitter: calculateAverageJitter( definedResponseTimes )
+		, averagePing: calculateAveragePing( definedResponseTimes )
+		, maxPing: getMaxPing( definedResponseTimes )
+		, minPing: getMinPing( definedResponseTimes )
+		, uptime: calculateUptime( pingInfo )
+	};
 }
