@@ -26,12 +26,22 @@ export default class Settings extends Component {
 	};
 
 	handleChange( field, event ) {
+		if ( this.props.pingRunning ) {
+			stopPinging();
+		}
+
 		this.setState( { [ field ]: event.target.value } );
 	}
 
 	handleFocus = event => event.target.select();
 
-	toggleAlertOnHighPing = () => this.setState( { alertOnHighPing: !this.state.alertOnHighPing } );
+	toggleAlertOnHighPing = () => {
+		if ( this.props.pingRunning ) {
+			stopPinging();
+		}
+
+		this.setState( { alertOnHighPing: !this.state.alertOnHighPing } );
+	};
 
 	startPinging = () => {
 		const { alertOnHighPing, highPingThreshold, host, timeout } = this.state;
