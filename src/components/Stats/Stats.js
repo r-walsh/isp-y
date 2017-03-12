@@ -12,6 +12,7 @@ export default function Stats( { pingInfo } ) {
 		, averagePing
 		, maxPing
 		, minPing
+		, timeRunning
 		, uptime
 	} = getPingStats( pingInfo );
 
@@ -42,6 +43,10 @@ export default function Stats( { pingInfo } ) {
 				<Stat
 					name="min. ping"
 					value={ `${ minPing }ms` }
+				/>
+				<Stat
+					name="time running"
+					value={ timeRunning }
 				/>
 			</div>
 		</div>

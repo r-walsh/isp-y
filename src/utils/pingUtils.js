@@ -6,15 +6,15 @@ function getDefinedResponseTimes( pingInfo ) {
 		.filter( time => time !== undefined );
 }
 
-export function calculateAveragePing( responseTimes ) {
-	return R.pipe(
-			  R.sum
-			, R.divide( R.__, responseTimes.length )
-			, Math.round
-		)( responseTimes ) || 0;
+function average( responseTimes ) {
+	return R.converge( R.divide, [ R.sum, R.length ] )( responseTimes );
 }
 
-export function calculateAverageJitter( pingInfo ) {
+function calculateAveragePing( responseTimes ) {
+	return Math.round( average( responseTimes ) ) || 0;
+}
+
+function calculateAverageJitter( pingInfo ) {
 	if ( pingInfo.length <= 0 ) {
 		return 0;
 	}
@@ -23,12 +23,12 @@ export function calculateAverageJitter( pingInfo ) {
 		R.pipe(
 			  R.aperture( 2 )
 			, R.map( ( [ a, b ] ) => Math.abs( a - b ) )
-			, R.converge( R.divide, [ R.sum, R.length ] )
+			, average
 		)( pingInfo ) || 0
 	).toFixed( 2 );
 }
 
-export function calculateUptime( pingInfo ) {
+function calculateUptime( pingInfo ) {
 	const amountTimedOut = pingInfo.filter( ( { responseTime } ) => responseTime === undefined ).length;
 
 	const uptime = Math.round( ( 1 - ( amountTimedOut / pingInfo.length ) ) * 100 );
@@ -43,9 +43,30 @@ function getMaxPing( responseTimes ) {
 }
 
 function getMinPing( responseTimes ) {
-	const minOrNegativeInfinity = Math.round( Math.min( ...responseTimes ) );
+	const minOrInfinity = Math.round( Math.min( ...responseTimes ) );
 
-	return minOrNegativeInfinity === -Infinity ? 0 : minOrNegativeInfinity;
+	return minOrInfinity === Infinity ? 0 : minOrInfinity;
+}
+
+function getTimeRunning( pingInfo ) {
+	if ( pingInfo.length <= 1 ) {
+		return "0s";
+	}
+
+	const millisecondsSinceStart = pingInfo[ 0 ].timeSent.getTime();
+	const timeDifferenceInMS = Date.now() - millisecondsSinceStart;
+
+	if ( timeDifferenceInMS > 1000 * 60 * 60 ) {
+		return `${ Math.round( timeDifferenceInMS / ( 1000 * 60 * 60 ) ) }h`;
+	}
+
+	if ( timeDifferenceInMS > 1000 * 60 ) {
+		return `${ Math.round( timeDifferenceInMS / ( 1000 * 60 ) ) }m`;
+	}
+
+	if ( timeDifferenceInMS > 1000 ) {
+		return `${ Math.round( timeDifferenceInMS / 1000 ) }s`;
+	}
 }
 
 export default function getPingStats( pingInfo ) {
@@ -56,6 +77,7 @@ export default function getPingStats( pingInfo ) {
 		, averagePing: calculateAveragePing( definedResponseTimes )
 		, maxPing: getMaxPing( definedResponseTimes )
 		, minPing: getMinPing( definedResponseTimes )
+		, timeRunning: getTimeRunning( pingInfo )
 		, uptime: calculateUptime( pingInfo )
 	};
 }
