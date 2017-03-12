@@ -43,15 +43,12 @@ export default class Settings extends Component {
 		this.setState( { alertOnHighPing: !this.state.alertOnHighPing } );
 	};
 
-	startPinging = () => {
-		const { alertOnHighPing, highPingThreshold, host, timeout } = this.state;
-
-		startPinging( host, timeout, alertOnHighPing, highPingThreshold );
-	};
-
-	stopPinging() {
-		stopPinging();
-	}
+	startPinging = () => startPinging(
+		  this.state.host
+		, this.state.timeout
+		, this.state.alertOnHighPing
+		, this.state.highPingThreshold
+	);
 
 	render() {
 		const {
@@ -138,7 +135,7 @@ export default class Settings extends Component {
 						<button
 							className="settings__button settings__button--stop"
 							disabled={ !pingRunning }
-							onClick={ this.stopPinging }
+							onClick={ stopPinging }
 						>
 							STOP
 						</button>
