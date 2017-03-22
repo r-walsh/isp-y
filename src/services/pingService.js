@@ -14,10 +14,9 @@ function setupHighPingAlerts( host, threshold, $pinger ) {
 		.subscribe( time => {
 			if ( time === undefined ) {
 				new window.Notification( "Connection Lost", { body: `Ping to ${ host } timed out` } );
-				return;
+			} else {
+				new window.Notification( "High Ping Warning", { body: `${ Math.round( time ) }ms` } );
 			}
-
-			new window.Notification( "High Ping Warning", { body: `${ Math.round( time ) }ms` } );
 		} );
 }
 
@@ -28,7 +27,6 @@ export function startPinging( host, timeoutString, alertOnHighPing, notification
 
 	const $pinger = Observable
 		.interval( interval * 1000 )
-		.startWith( 0 )
 		.takeUntil( stop$ )
 		.flatMap( () => ping.promise.probe( host, { timeout: interval } )
 			.then( result => [ result, new Date() ] )
